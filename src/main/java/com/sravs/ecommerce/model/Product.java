@@ -22,7 +22,7 @@ public class Product {
         this.category = category;
     }
 
-    //Many to one
+    //Many-to-one relationship
     @ManyToOne
     @JoinColumn(name = "category_id")
     Category category;

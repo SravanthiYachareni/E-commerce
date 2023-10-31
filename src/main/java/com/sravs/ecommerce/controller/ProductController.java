@@ -48,6 +48,6 @@ public class ProductController {
 
         }
         productService.updateProduct(productDto,productId);
-        return new ResponseEntity<>(new  ApiResponse(true,"product has been added"), HttpStatusCode.valueOf(HttpStatus.SC_CREATED));
+        return new ResponseEntity<>(new  ApiResponse(true,"product has been updated"), HttpStatusCode.valueOf(HttpStatus.SC_CREATED));
     }
 }
