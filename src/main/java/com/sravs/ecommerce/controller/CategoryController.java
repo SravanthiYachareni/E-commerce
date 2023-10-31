@@ -12,16 +12,18 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
+
     @PostMapping("/create")
-    public String createCategory(@RequestBody Category category){
+    public String createCategory(@RequestBody Category category) {
         categoryService.createCategory(category);
         return "success";
     }
-   @GetMapping("/list")
-   public List<Category> listCategory() {
-  return  categoryService.listCategory();
 
-   }
+    @GetMapping("/list")
+    public List<Category> listCategory() {
+        return categoryService.listCategory();
+
+    }
 
 
 }

@@ -9,10 +9,23 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private  @NotNull String name;
-    private  @NotNull String imageUrl;
-    private  @NotNull String  price;
-    private  @NotNull String description;
+    private @NotNull String name;
+    private @NotNull String imageUrl;
+    private @NotNull String description;
+    private @NotNull String price;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    //Many to one
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    Category category;
 
     public String getDescription() {
         return description;
