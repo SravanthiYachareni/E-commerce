@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 
-public interface TkoenRepo extends JpaRepository<AuthenticationToken, Integer> {
+public interface TokenRepo extends JpaRepository<AuthenticationToken, Integer> {
 }

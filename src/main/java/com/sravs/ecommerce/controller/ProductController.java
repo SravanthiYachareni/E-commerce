@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+
+// GET https://localhost:8080/product/add
 @RestController
 @RequestMapping("/product")
 public class ProductController {
