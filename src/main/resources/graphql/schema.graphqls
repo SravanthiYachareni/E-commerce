@@ -1,0 +1,33 @@
+type Employee {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    xid: String!
+    pid: String!
+    region: String!
+    desk: String!
+    peregineRole: [String!]!
+    eidosEnabled: Boolean!
+    eidosTeam: [String!]!
+    eidosGroup: [String!]!
+}
+
+input EmployeeInput {
+    id: String
+    firstName: String
+    lastName: String
+    email: String
+    xid: String
+    pid: String
+    region: String
+    desk: String
+    peregineRole: [String!]
+    eidosEnabled: Boolean
+    eidosTeam: [String!]
+    eidosGroup: [String!]
+}
+
+type Query {
+    findEmployees(input: EmployeeInput): [Employee!]!
+}
