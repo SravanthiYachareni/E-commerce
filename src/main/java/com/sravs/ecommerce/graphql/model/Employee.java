@@ -2,6 +2,8 @@ package com.sravs.ecommerce.graphql.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 

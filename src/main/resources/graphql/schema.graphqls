@@ -30,4 +30,6 @@ input EmployeeInput {
 
 type Query {
     findEmployees(input: EmployeeInput): [Employee!]!
+    findEmployeesByPaging(page:Int!, size: Int!):[Employee!]!
+    findEmployeesByPid(pid:String!):[Employee!]!
 }

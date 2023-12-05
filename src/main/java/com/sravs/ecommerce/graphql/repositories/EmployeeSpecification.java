@@ -14,7 +14,7 @@ public final class EmployeeSpecification {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            // Add conditions based on the fields in the EmployeeFilter object
+            // Add conditions based on the fields in the EmployeeInput object
             if (filter.getFirstName() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("firstName"), filter.getFirstName()));
             }
@@ -29,6 +29,9 @@ public final class EmployeeSpecification {
             }
             if (filter.getPid() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("pid"), filter.getPid()));
+            }
+            if (filter.getRegion() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("region"), filter.getRegion()));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
