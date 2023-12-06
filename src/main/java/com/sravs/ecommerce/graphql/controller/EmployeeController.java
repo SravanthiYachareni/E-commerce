@@ -1,12 +1,16 @@
 package com.sravs.ecommerce.graphql.controller;
 
+import com.sravs.ecommerce.graphql.entity.EmployeeEntity;
 import com.sravs.ecommerce.graphql.model.Employee;
 import com.sravs.ecommerce.graphql.model.EmployeeInput;
 import com.sravs.ecommerce.graphql.service.EmployeeService;
+import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -23,7 +27,7 @@ public class EmployeeController {
     }
 
     @QueryMapping
-    public List<Employee> findEmployees(@Argument EmployeeInput input) {
+    public List<Employee> findEmployees(@Argument EmployeeInput input) throws MessagingException {
         log.info("EmployeeInput request has been received");
         return employeeService.findEmployeesByFilter(input);
     }
@@ -33,7 +37,6 @@ public class EmployeeController {
         log.info("findEmployeesByPaging has been called with page number "+page+ " and size" + " " +size);
         return employeeService.getAll(page, size);
     }
-
     @QueryMapping
     public List<Employee> findEmployeesByPid(@Argument String pid) {
         log.info("findEmployeesByPid has been called by " + pid );

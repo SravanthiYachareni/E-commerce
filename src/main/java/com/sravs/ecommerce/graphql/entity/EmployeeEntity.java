@@ -30,7 +30,10 @@ public class EmployeeEntity {
 //    private List<String> peregineRole;
 
     private boolean eidosEnabled;
+    public String getEmail() {
+        return email;
 
+    }
 //    @ElementCollection
 //    private List<String> eidosTeam;
 

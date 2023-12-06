@@ -7,23 +7,30 @@ import com.sravs.ecommerce.graphql.model.EmployeeInput;
 import com.sravs.ecommerce.graphql.repositories.EmployeeRepository;
 import com.sravs.ecommerce.graphql.repositories.EmployeeSpecification;
 import com.sravs.ecommerce.graphql.transformer.EmployeeTransformer;
+import com.sravs.ecommerce.util.EmailUtil;
 import jakarta.annotation.PostConstruct;
+import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 @Slf4j
 @Service
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    @Autowired
+    EmailUtil emailUtil;
 
     @Autowired
     public EmployeeService(EmployeeRepository employeeRepository) {
@@ -45,7 +52,7 @@ public class EmployeeService {
         EmployeeEntity employee1 = new EmployeeEntity();
         employee1.setFirstName("Sravanthi");
         employee1.setLastName("Yac");
-        employee1.setEmail("s@gmail.com");
+        employee1.setEmail("sravanthiyachareni@gmail.com");
         employee1.setRegion("US");
         employee1.setEidosEnabled(false);
         employee1.setDesk("Desk1");
@@ -78,13 +85,16 @@ public class EmployeeService {
         employeeRepository.save(employee3);
     }
 
-    public List<Employee> findEmployeesByFilter(EmployeeInput filter) {
+    @Cacheable(cacheNames = "employees", key = "#filter")
+    public List<Employee> findEmployeesByFilter(EmployeeInput filter) throws MessagingException {
         log.info("fetching the employee object by filtering");
         Specification<EmployeeEntity> entitySpecification = EmployeeSpecification.filterEmployees(filter);
         List<EmployeeEntity> employeeEntities = employeeRepository.findAll(entitySpecification);
+        // emailUtil.sendMail("sravanthiyachareni@gmail.com","hi");
         return EmployeeTransformer.transformToEmployee(employeeEntities);
     }
 
+    @Cacheable(cacheNames = "employees", key = "#page")
     public List<Employee> getAll(int page, int size) {
         if (size == 0) {
             throw new InvalidInputException("Page size must not be less than one");
@@ -94,13 +104,24 @@ public class EmployeeService {
         List<EmployeeEntity> employeeEntities = employeeRepository.findAll(pageable).getContent();
         return EmployeeTransformer.transformToEmployee(employeeEntities);
     }
-    public  List<Employee> getAllByPid(String pid) {
-        if(pid ==null || pid.isEmpty()){
+
+    @Cacheable(cacheNames = "employees", key = "#pid")
+    public List<Employee> getAllByPid(String pid) {
+        if (pid == null || pid.isEmpty()) {
             throw new InvalidInputException(("Pid cannot be empty"));
         }
         log.info("Fetching the employee object By pid");
-        List<EmployeeEntity> employeeEntities=employeeRepository.findAllByPid(pid);
+        List<EmployeeEntity> employeeEntities = employeeRepository.findAllByPid(pid);
         return EmployeeTransformer.transformToEmployee(employeeEntities);
+    }
+
+    @Scheduled(cron = "*/2 * * * * *")
+    @Async
+//@Scheduled(fixedRate = 2000)
+//@Scheduled(fixedDelay = 1000)
+    public void processTask() {
+        List<EmployeeEntity> employeeEntities = employeeRepository.findAll();
+        log.info("fetched object from database" + new Date()+ employeeEntities);
     }
 }
 
