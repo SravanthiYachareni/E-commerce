@@ -90,7 +90,7 @@ public class EmployeeService {
         log.info("fetching the employee object by filtering");
         Specification<EmployeeEntity> entitySpecification = EmployeeSpecification.filterEmployees(filter);
         List<EmployeeEntity> employeeEntities = employeeRepository.findAll(entitySpecification);
-        // emailUtil.sendMail("sravanthiyachareni@gmail.com","hi");
+        emailUtil.sendMail("sravanthiyachareni@gmail.com","Fetching Your details");
         return EmployeeTransformer.transformToEmployee(employeeEntities);
     }
 
@@ -115,13 +115,6 @@ public class EmployeeService {
         return EmployeeTransformer.transformToEmployee(employeeEntities);
     }
 
-    @Scheduled(cron = "*/2 * * * * *")
-    @Async
-//@Scheduled(fixedRate = 2000)
-//@Scheduled(fixedDelay = 1000)
-    public void processTask() {
-        List<EmployeeEntity> employeeEntities = employeeRepository.findAll();
-        log.info("fetched object from database" + new Date()+ employeeEntities);
-    }
+
 }
 
